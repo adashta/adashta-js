@@ -1,0 +1,25 @@
+{
+  "name": "adashta-js",
+  "version": "1.0.6",
+  "description": "A javascript client for real-time messaging tool based on NodeJS that will seamlessly transfer data between different devices.",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adashta/adashta-js.git"
+  },
+  "keywords": [
+    "nodejs",
+    "data",
+    "real-time",
+    "communication",
+    "queue",
+    "websocket",
+    "messaging"
+  ],
+  "author": "Kalpit Rathore",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/adashta/adashta-js/issues"
+  },
+  "homepage": "https://github.com/adashta/adashta-js#readme"
+}

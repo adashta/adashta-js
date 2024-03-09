@@ -1,4 +1,4 @@
-class Adashta {
+export class Adashta {
   adashtaSocketHost; // TODO: Change `adashtaSocketHost` data type.
   adashtaSocketPort; // TODO: Change `adashtaSocketPort` data type.
 
