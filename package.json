@@ -1,7 +1,7 @@
 {
   "name": "adashta-js",
   "version": "1.0.7",
-  "description": "A javascript client for real-time messaging tool based on NodeJS that will seamlessly transfer data between different devices.",
+  "description": "Adashta client javascript library",
   "main": "index.js",
   "repository": {
     "type": "git",
