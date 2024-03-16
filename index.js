@@ -1,69 +1,79 @@
+const chartJsScriptUrl = 'https://cdn.jsdelivr.net/npm/chart.js';
+
 export class Adashta {
-  adashtaSocketHost; // TODO: Change `adashtaSocketHost` data type.
-  adashtaSocketPort; // TODO: Change `adashtaSocketPort` data type.
+  adashtaHost;
+  adashtaPort;
+  chartData = {};
 
   constructor(config) {
-    this.adashtaSocketHost = config.adashtaSocketHost || 'localhost';
+    this.adashtaHost = config.adashtaHost || 'localhost';
 
-    if (this.adashtaSocketHost && !isRelativeUrl(this.adashtaSocketHost)) {
+    if (this.adashtaHost && !isRelativeUrl(this.adashtaHost)) {
       console.error('Adashta: Invalid socket host');
     }
 
-    this.adashtaSocketPort = config.adashtaSocketPort || 8080;
+    this.adashtaPort = config.adashtaPort || 8080;
 
-    if (this.adashtaSocketPort < 0 || this.adashtaSocketPort > 65535) {
+    if (this.adashtaPort < 0 || this.adashtaPort > 65535) {
       console.error('Adashta: Invalid socket port');
     }
 
-    let scriptEle = document.createElement("script");
-    scriptEle.setAttribute("src", "https://cdn.jsdelivr.net/npm/chart.js");
-    document.body.appendChild(scriptEle);
+    const chartJsScriptElement = document.createElement('script');
+    chartJsScriptElement.setAttribute('src', chartJsScriptUrl);
+    document.body.appendChild(chartJsScriptElement);
 
-    const exampleSocket = new WebSocket(`ws://${this.adashtaSocketHost}:${this.adashtaSocketPort}`);
-    
-    scriptEle.onload = () => {
-      setTimeout(() => {
-        exampleSocket.send(JSON.stringify({
-            message: `This is message is from client`
-        }));
-      }, 1000);
-    
-      const chartData = {};
-      exampleSocket.addEventListener("message", (event) => {
-        console.log("Message from server ", JSON.parse(event.data));
-    
-        const response = JSON.parse(event.data);
-    
-        if(Object.keys(chartData).includes(response.chartId)) {
-    
-          // Updating labels
-          chartData[response.chartId].data.labels = response.data.data.labels;
-          
-          // Updating options
-          chartData[response.chartId].options = response.data.options;
-    
-          // Datasets options
-          for (let i=0; i<response.data.data.datasets.length; i++) {
-            if(chartData[response.chartId].data.datasets[i]) {
-              chartData[response.chartId].data.datasets[i].data = response.data.data.datasets[i].data;
-            }
-            else {
-              chartData[response.chartId].data.datasets[i] = response.data.data.datasets[i];
-            }
-          }
-    
-          // chartData[response.chartId].data.labels.push('world');
-          // chartData[response.chartId].data.datasets[0].data.push(Math.floor(Math.random() * 10));
-          
-          chartData[response.chartId].update();
-        }
-        else {
-          chartData[response.chartId] = new Chart(document.querySelectorAll(response.querySelector)[0], response.data);
-        }
-      });
+    const ws = new WebSocket(`ws://${this.adashtaHost}:${this.adashtaPort}`);
+
+    chartJsScriptElement.onload = () => {
+      this.initiate(ws);
     };
   }
+
+
+  
+
+  initiate(ws) {
+    setTimeout(() => {
+      ws.send(JSON.stringify({
+          message: `This is message is from client`
+      }));
+    }, 1000);
+    
+    ws.addEventListener('message', (event) => {
+      const data = JSON.parse(event.data);
+      this.consume(data);
+    });
+  }
+
+  consume(data) {
+    if(data.chartData) {
+      this.renderChart(data);
+    }
+  }
+
+  renderChart(data) {
+    if(Object.keys(this.chartData).includes(data.chartId)) {
+  
+      this.chartData[data.chartId].data.labels = data.chartData.data.labels;
+      this.chartData[data.chartId].options = data.chartData.options;
+
+      for (let i=0; i<data.chartData.data.datasets.length; i++) {
+        if(this.chartData[data.chartId].data.datasets[i]) {
+          this.chartData[data.chartId].data.datasets[i].data = data.chartData.data.datasets[i].data;
+        }
+        else {
+          this.chartData[data.chartId].data.datasets[i] = data.chartData.data.datasets[i];
+        }
+      }
+      
+      this.chartData[data.chartId].update();
+    }
+    else {
+      this.chartData[data.chartId] = new Chart(document.querySelectorAll(data.querySelector)[0], data.chartData);
+    }
+  }
 }
+
 
 const isRelativeUrl = (urlString) => {
   const RgExp = new RegExp('^(?:[a-z]+:)?//', 'i');
