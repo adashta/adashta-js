@@ -1,6 +1,6 @@
 {
   "name": "adashta-js",
-  "version": "1.0.7",
+  "version": "1.0.11",
   "description": "Adashta client javascript library",
   "main": "index.js",
   "repository": {
