@@ -68,7 +68,7 @@ In the above code, we are logging the `clientId` when a new client is connected 
 
 ```html
 <script type="module">
-    import { Adashta } from 'https://cdn.skypack.dev/adashta-js@v1.0.7';
+    import { Adashta } from 'https://cdn.skypack.dev/adashta-js';
 </script>
 ```
 Adashta is available as an ES module. You can include it in your HTML file using the script tag with type module.
@@ -88,7 +88,7 @@ You need to pass the host and port of the Adashta server to the constructor of t
 
 ```html
 <script type="module">
-        import { Adashta } from 'https://cdn.skypack.dev/adashta-js@v1.0.7';
+        import { Adashta } from 'https://cdn.skypack.dev/adashta-js';
         
         const adashta = new Adashta({
           adashtaHost: 'localhost',
@@ -248,7 +248,7 @@ Here we are creating a chart with dummy data and sending it to the client.
 Generally, We will have a `chart` object containing the chart data and other configurations. We will pass this object to the `produce` method to send the chart to the client.
 
 We are using `setInterval` and `getRandomInt` methods to update the chart data every 2 seconds with random data. You can replace it with your own function to get the data from the database or any other source.
-
+x
 #### Client
 
 No additional frontend coding is required to render the chart. The chart will be automatically rendered in the specified query selector.
@@ -259,7 +259,7 @@ This provides a seamless integration of real-time charts into your application w
 ## Contributing
 
 Adashta is an open-source project that aims to simplify real-time communication for developers. We welcome contributions and feedback from the community.
-If you have any questions or suggestions, please feel free to reach out to us at contact@adashta.co
+If you have any questions or suggestions, please feel free to reach out to us at hello@adashta.co
 
 If you would like to contribute to the project, please visit our GitHub repository at https://github.com/adashta/adashta
 
